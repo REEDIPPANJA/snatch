@@ -13,7 +13,13 @@ const registerUser= async (req, res) => {
                 else {
                 try{
                 let User= await user.findOne({email:email}) 
-                 if(User)return res.send({"message":"user already exists"});
+                 if(User){
+                req.flash("success" ,"user already exist")
+                res.redirect("/");
+                }
+                else{
+
+               
 
                     let registedUser = await user.create({
                         email,
@@ -23,10 +29,12 @@ const registerUser= async (req, res) => {
                   
                  let token=genratedToken(registedUser);
                  res.cookie("token",token);
-
-                 res.status(201).send({"message":"user created sucessfully "});
+                 req.flash("success" ,"account created sucessfully")
+                 res.redirect("/");
+                }
  
                 }catch(err){
+                    req.flash("error" ,"server error")
                     res.send(err.message)
                 }
                 }

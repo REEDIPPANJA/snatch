@@ -6,7 +6,8 @@ const userModel= require('../models/model.user');
 
 router.get("/", (req,res)=>{
     let error=req.flash("error");
-    res.render("index",{ error ,loggedin :false });
+    let success=req.flash("success")
+    res.render("index",{ error,success ,loggedin :false });
 });
 
 router.get("/shop",isLogged,async (req,res)=>{  
