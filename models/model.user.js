@@ -17,10 +17,10 @@ const userSchema= new mongoose.Schema({
     },
     
     // cart : [],
-    cart :{
-        type:Array,
-        default:[]
-    },
+    cart :[{
+        type:mongoose.Schema.Types.ObjectId,
+         ref : "Product"
+    }],
     orders :{
         type:Array,
         default:[]

@@ -26,5 +26,9 @@ if (process.env.NODE_ENV === 'development') {
     })
 
 }
+ownerRoute.get('/admin', (req, res) => {
+    let success=req.flash("success");
+    res.render("createproducts",{success});
+})
 
 module.exports = ownerRoute;

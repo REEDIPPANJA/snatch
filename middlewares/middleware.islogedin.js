@@ -9,7 +9,7 @@ async function isLogged(req,res,next){
 
     try{
         let decode=jwt.verify(req.cookies.token,process.env.JWT_KEY);
-        let User= user.findOne({email:email}).select("-password");
+        let User= await user.findOne({email:decode.email}).select("-password");
 
         req.user=User;
 

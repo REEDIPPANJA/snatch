@@ -1,4 +1,5 @@
 const user = require('../models/model.user');
+const productModel = require('../models/model.product');
 const bcrypt = require('bcrypt')
 const {genratedToken} =require('../utils/genrateToken')
 const registerUser= async (req, res) => {
@@ -48,15 +49,25 @@ async function loginUser (req , res){
      if(!User) return res.status(404).send({"message":"user Not found"});
     
      let hashPassword= User.password;
-     let isMatched=bcrypt.compare(password,hashPassword,(err,result)=>{
+     let isMatched=bcrypt.compare(password,hashPassword,async (err,result)=>{
         if(result){
             let token=genratedToken(User);
             res.cookie("token",token);
-            res.send({"messsage":"you are logged in"})
+            // res.send({"messsage":"you are logged in"})
+            let products = await productModel.find(); // or apply filters/sorting if needed
+              res.render("shop", { products });
+
+          
         }else{
+        
             return res.status(404).send({"message":"email or password incorrect"});
         }
      });
 }
+const logoutUser =(req,res)=>{
+    res.cookie("token","");
+    res.redirect("/")
+}
 module.exports.registerUser = registerUser;
 module.exports.loginUser = loginUser;
+module.exports.logoutUser = logoutUser;

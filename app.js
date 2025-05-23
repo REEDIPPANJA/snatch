@@ -35,7 +35,7 @@ app.get('/home',(req,res)=>{
 app.use("/",indexRoute);
 app.use('/users',userRoute);
 app.use('/owner',ownerRoute);
-app.use('/product',productRoute);
+app.use('/products',productRoute);
 
 app.listen(process.env.PORT,()=>{
     console.log("running successfully")
