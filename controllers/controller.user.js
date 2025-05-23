@@ -3,7 +3,7 @@ const bcrypt = require('bcrypt')
 const {genratedToken} =require('../utils/genrateToken')
 const registerUser= async (req, res) => {
     try {
-        let { email, password, fullName } = req.body;
+        let {  fullName,email, password} = req.body;
 
         bcrypt .genSalt(10, function (err, salt) {
 
@@ -41,4 +41,22 @@ const registerUser= async (req, res) => {
         console.log(error.message);
     }
 }
+async function loginUser (req , res){
+     let {email, password} = req.body;
+
+     let User = await user.findOne({email:email});
+     if(!User) return res.status(404).send({"message":"user Not found"});
+    
+     let hashPassword= User.password;
+     let isMatched=bcrypt.compare(password,hashPassword,(err,result)=>{
+        if(result){
+            let token=genratedToken(User);
+            res.cookie("token",token);
+            res.send({"messsage":"you are logged in"})
+        }else{
+            return res.status(404).send({"message":"email or password incorrect"});
+        }
+     });
+}
 module.exports.registerUser = registerUser;
+module.exports.loginUser = loginUser;
